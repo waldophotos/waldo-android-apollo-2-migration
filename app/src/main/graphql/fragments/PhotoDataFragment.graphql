@@ -1,0 +1,24 @@
+fragment Url on PhotoURLType {
+        size_code
+        url
+        width
+        height
+        mime_type
+}
+
+fragment PhotoData on Photo {
+    id
+    thumbnail_urls(ignore_watermark: true) {
+        ...Url
+    }
+
+    watermarked_urls {
+        ...Url
+    }
+
+    is_favorite
+    is_viewed
+    has_watermarked_urls
+    share_blocked
+}
+

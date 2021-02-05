@@ -1,0 +1,8 @@
+query GetNotifications($accountId: RecordID!, $limit: Int, $offset: Int) {
+    notifications(account_id: $accountId, slice: { limit: $limit, offset: $offset }) {
+        total
+        records {
+            ...NotificationDetails
+        }
+    }
+}
