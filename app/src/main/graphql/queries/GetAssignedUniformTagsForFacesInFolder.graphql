@@ -1,0 +1,21 @@
+query GetAssignedUniformTagsForFacesInFolder($folderId: RecordID!, $faceIds: [RecordID]) {
+    me {
+        linked_identities(slice: { limit: 9999 }, identity_ids: $faceIds) {
+            records {
+               ...AssignmentFaceData
+            }
+        }
+    }
+}
+
+fragment AssignmentFaceData on Identity {
+  ...on Identity {
+		...TaggedFaceData
+  }
+
+  album_folder_tags(slice: { limit: 9999 }, type: UNIFORM, album_folder_id: $folderId) {
+    records {
+      ...AssignedUniformMatchingTag
+    }
+  }
+}
