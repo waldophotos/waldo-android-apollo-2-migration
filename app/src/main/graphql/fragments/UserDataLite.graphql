@@ -1,0 +1,16 @@
+fragment UserDataLite on Account {
+        id,
+        first_name: name,
+        username,
+        phone_number,
+        current_selfie_face {
+                  photo {
+                    ...PhotoData
+                  }
+                }
+        avatar_photo {
+                    thumbnail_urls {
+                      ...Url
+                    }
+                  }
+}

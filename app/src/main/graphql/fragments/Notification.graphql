@@ -1,0 +1,165 @@
+
+fragment AlbumShareDetails on AlbumShare {
+    id
+    status
+    sender_account {
+         ...UserDataLite
+    }
+    album {
+        name
+        cover_photo {
+            ...PhotoData
+        }
+        root_album_folder {
+            id
+        }
+    }
+}
+fragment AlbumFolderShareDetails on AlbumFolderShare {
+    id
+    status1 : status
+    sender_account {
+        ...UserDataLite
+    }
+    album_folder {
+        id
+        name
+        cover_photos(slice: { limit: 1, offset: 0}) {
+            records {
+                ...PhotoData
+            }
+        }
+    }
+}
+
+
+fragment NotificationDetails on INotification {
+
+    ... on IRecord {
+        id
+        created_at
+    }
+
+    message
+    category
+    is_read
+    is_resolved
+
+
+
+    ...on NewMatchesInJoinedAlbumNotification {
+        album_membership {
+            id
+                root_album_membership_group(root_groups_only: true) {
+                id
+            }
+            entitled_matched_photos(slice: { offset: 0, limit: 1}) {
+                records {
+                    ...PhotoData
+                }
+            }
+        }
+        identities {
+            id
+            current_face {
+                photo {
+                    ...PhotoData
+                }
+            }
+        }
+    }
+
+    ... on UsersJoinedAlbumNotification {
+        album_membership {
+            root_album_membership_group(root_groups_only: true) {
+                id
+            }
+            cover_photos(slice: { offset: 0, limit: 1}) {
+                records {
+                    ...PhotoData
+                }
+            }
+        }
+        account {
+            current_selfie_face {
+                photo {
+                    ...PhotoData
+                }
+            }
+        }
+    }
+
+    ... on InboundAlbumShareNotification {
+        album_share {
+            ...AlbumShareDetails
+            album_membership {
+                root_album_membership_group(root_groups_only: true) {
+                    id
+                }
+                cover_photos(slice: { offset: 0, limit: 1}) {
+                    records {
+                        ...PhotoData
+                    }
+                }
+            }
+        }
+    }
+
+    ... on AlbumShareAcceptedNotification {
+        album_share {
+            ...AlbumShareDetails
+            album_membership {
+                root_album_membership_group(root_groups_only: true) {
+                    id
+                }
+                cover_photos(slice: { offset: 0, limit: 1}) {
+                    records {
+                        ...PhotoData
+                    }
+                }
+            }
+
+        }
+    }
+    ... on AlbumFolderShareAcceptedNotification {
+        album_folder_share {
+            ...AlbumFolderShareDetails
+        }
+
+    }
+    ... on InboundAlbumFolderShareNotification {
+        album_folder_share {
+            ...AlbumFolderShareDetails
+        }
+
+    }
+
+    ... on NewPhotosPublishedNotification {
+        album {
+            id
+            name
+            web_app_urls {
+                album_photos_review_url
+            }
+            cover_photo {
+                ...PhotoData
+            }
+        }
+    }
+    ... on NewPhotosToReviewNotification {
+        album {
+            id
+            name
+            web_app_urls {
+                album_photos_review_url
+            }
+            cover_photo {
+                ...PhotoData
+            }
+        }
+    }
+}
+
+
+
+
